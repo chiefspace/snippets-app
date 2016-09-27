@@ -29,8 +29,13 @@ def get(name):
     command = "SELECT * FROM snippets WHERE keyword = (%s)"
     cursor.execute(command, (name,))
     snippet = cursor.fetchone()
-    logging.debug("Snippet retrieved successfully.")
-    return snippet
+    connection.commit()
+
+    if not snippet:
+        # No snippet was found with that name.
+        return "404: Snippet Not Found"
+    else:
+        return snippet
 
 
 def main():
@@ -58,10 +63,10 @@ def main():
 
     if command == "put":
         name, snippet = put(**arguments)
-        print("Stored {!r} as {!r}".format(snippet, name))
+        print("Attempted to store {!r} as {!r}".format(snippet, name))
     elif command == "get":
         snippet = get(**arguments)
-        print("Retrieved snippet: {!r}".format(snippet))
+        print("Snippet retrieval results: {!r}".format(snippet))
 
 if __name__ == "__main__":
     main()
