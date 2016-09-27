@@ -51,6 +51,15 @@ def catalog():
         stored_snippets = cursor.fetchall()
         return stored_snippets
 
+def search(string_to_search):
+    logging.info("Searching all snippets stored in the database for substring contained in any snippet message")
+
+    with connection, connection.cursor() as cursor:
+        like_string = str("%%" + string_to_search + "%%")
+        cursor.execute("select * from snippets where message like %s", (like_string,))
+        results_of_search = cursor.fetchall()
+        return results_of_search
+
 def main():
     """Main function"""
     logging.info("Constructing parser")
@@ -73,6 +82,11 @@ def main():
     logging.debug("Constructing catalog subparser")
     catalog_parser = subparsers.add_parser("catalog", help="Create a catalog view of snippets stored in the database")
 
+    # Subparser for the search command
+    logging.debug("Constructing search subparser")
+    search_parser = subparsers.add_parser("search", help="Search all snippets stored in the database for substring contained in any snippet messages")
+    search_parser.add_argument("string_to_search", help="String to search within the message portion of the snippet")
+
     arguments = parser.parse_args()
     # Convert parsed arguments from Namespace to dictionary
     arguments = vars(arguments)
@@ -88,6 +102,10 @@ def main():
         catalog_of_snippets = catalog()
         print("Creating a catalog view of all snippets stored in the database")
         print(catalog_of_snippets)
+    elif command == "search":
+        search_results = search(**arguments)
+        print("Searching all snippets stored in the database for substring contained in any snippet message")
+        print(search_results)
 
 if __name__ == "__main__":
     main()
