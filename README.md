@@ -12,13 +12,13 @@ Time spent: **0.10** hours spent in total
 
 The following **required** functionality is completed:
 
-* [ ] User can **successfully add and remove items** from X
-* [ ] User can **blah blah blah** and then have any changes to the text reflected in the blah blah.
-* [ ] User can **blah blah blah** and retrieve them properly on app restart
+* [x] User can **successfully add and remove items** to and from PostgreSQL database called snippets.
+* [x] User can **obtain a catalog view of snippets in the database**.
+* [x] User can **search for substring in messages** column.
 
 The following **optional** features are implemented:
 
-* [ ] Persist the blah blah items [into SQLite](http://google.com) instead of a text file
+* [x] Persist the snippets [into PostgresQL](http://google.com) instead of a text file
 * [ ] Improve style of the blah blah items in the list [using a custom adapter](http://google.com)
 * [ ] Add support for completion due dates for blah blah items (and display within listview item)
 * [ ] Use a [DialogFragment](http://google.com) instead of new Activity for editing items
