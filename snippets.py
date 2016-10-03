@@ -16,6 +16,9 @@ def put(name, snippet):
     """Store a snippet with an associated name."""
     logging.info("Storing snippet {!r}: {!r}".format(name, snippet))
 
+    """ The code below is a with block which is also known as a context manager"""
+    """ The use of a contenxt manager in python ensures that any code that opens files or connections to a database are ensured to be closed ... """
+    """ ... after the process running the following code has completed execution """
     with connection, connection.cursor() as cursor:
         try:
             command = "insert into snippets values (%s, %s)"
@@ -24,6 +27,7 @@ def put(name, snippet):
             connection.rollback()
             command = "update snippets set message=%s where keyword=%s"
             cursor.execute(command, (snippet, name))
+            print("The contents of the variable e are as follows: %s" %(str(e)))
 
     connection.commit()
     logging.debug("Snippet stored successfully.")
@@ -88,8 +92,15 @@ def main():
     search_parser.add_argument("string_to_search", help="String to search within the message portion of the snippet")
 
     arguments = parser.parse_args()
-    # Convert parsed arguments from Namespace to dictionary
+
+    # Convert parsed arguments from Namespace to dictionary ... since the documentation for this program stipulates two arguments - key and value ...
+    # ... with the first argument being a subcommand
+    # the third argument will be a dictionary keyword and the third argument being a dictionary value then its safe to assume the argument order is ..
+    # get put ... followed by a keyword and then a value
+    # the catalog subcommand takes no arguments while the search subcommand only takes one argument
     arguments = vars(arguments)
+
+    # now grab the subcommand from the dictionary created from the previous line of code and stuff it in the variable called command:
     command = arguments.pop("command")
 
     if command == "put":
